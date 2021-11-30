@@ -1,7 +1,6 @@
 
 
 let choice="";
-
 let selection = ["rock", "paper", "scissors"];
 
 
@@ -11,80 +10,120 @@ choice = selection[randomSelection];
 return choice;
 }
 
-computerPlay();
-console.log(choice);
-let message ='';
-let playerSelection = prompt("Enter rock, paper, or scissors.")
-playerSelection = playerSelection.toLowerCase();
-console.log(playerSelection);
+function keeper (score, compScore){
+    if (score == 5 || compScore == 5){
+        if (score > compScore) {
+            hSix.textContent = "You are the winner!!!";
+            divTwo.appendChild(hSix);
+        } else if (compScore > score) {
+            hSix.textContent = "You are the loser!!!";
+            divTwo.appendChild(hSix);
+        } else if (compScore == score) {
+            hSix.textContent = "No one wins!!!";
+            divTwo.appendChild(hSix);
+        }
+    }
+}
 
-function playTime(playerSelection, choice) {
+function verbage (message){
+    if (message == 'You lose!'){
+        div.textContent = 'You lose!';
+        box.appendChild(div);
+        compScore++;
+        divTwo.textContent = `The computer's score is ${compScore}. \n Your score is ${score}.`;
+        gameScore.appendChild(divTwo);
+    } else if (message == 'You win!'){
+        div.textContent = 'You win!';
+        box.appendChild(div);
+        gameScore.appendChild(div);
+        score++;
+        divTwo.textContent = `The computer's score is ${compScore}. \n Your score is ${score}.`;
+        gameScore.appendChild(divTwo);
+    } else if (message == 'Tie Game!'){
+        div.textContent = 'Tie Game!';
+        box.appendChild(div);
+        divTwo.textContent = `The computer's score is ${compScore}. \n Your score is ${score}.`;
+        gameScore.appendChild(divTwo);
+    }
+}
+
+function playRound(playerSelection, choice) {
     if (playerSelection == 'rock' && choice == 'rock') {
-        message = "Tie game!";
-        alert(message);
+        message = "Tie Game!";
         return message;
     } else if (playerSelection == 'rock' && choice == 'paper') {
-        message = "You lose!"
-        alert(message);
+        message = "You lose!";
         return message;
     } else if (playerSelection == 'rock' && choice == 'scissors') {
         message = "You win!";
-        alert(message);
         return message;
     }
     if (playerSelection == 'paper' && choice == 'rock') {
         message = "You win!";
-        alert(message);
         return message;
     } else if (playerSelection == 'paper' && choice == 'paper') {
-        message = "Tie Game!"
-        alert(message);
+        message = "Tie Game!";
         return message;
     } else if (playerSelection == 'paper' && choice == 'scissors') {
         message = "You lose!";
-        alert(message);
         return message;
     }
     if (playerSelection == 'scissors' && choice == 'rock') {
         message = "You lose!";
-        alert(message);
         return message;
     } else if (playerSelection == 'scissors' && choice == 'paper') {
-        message = "You win!"
-        alert(message);
+        message = "You win!";
         return message;
     } else if (playerSelection == 'scissors' && choice == 'scissors') {
         message = "Tie Game!";
-        alert(message);
         return message;
     }
 }
 
 let score = 0;
-let compScore =0;
+let compScore = 0;
+computerPlay();
+console.log(choice);
 
-for (let i = 0; i < 5; i++) {
-    playTime(playerSelection, choice);
-    if (message == "You win!"){
-        score++;
-    } else if (message == "You lose!") {
-        compScore++;
-    }
+
+let message ='';
+let playerSelection = ''
+let num = '';
+
+const div = document.createElement('div');
+const divTwo = document.createElement('div');
+const hSix = document.createElement('h1');
+
+divTwo.classList.add('final');
+
+const box = document.querySelector('.box');
+const gameScore = document.querySelector('.gameScore');
+const rock = document.querySelector('#rock');
+const paper = document.querySelector('#paper');
+const scissors = document.querySelector('#scissors');
+
+
+rock.addEventListener('click', (playerSelection) =>{
+    playerSelection = 'rock';
+    playRound(playerSelection, choice);
     computerPlay();
-    if (i < 4){
-        playerSelection = prompt("Enter rock, paper, or scissors.")
-    }
-}
-let victory = '';
-if (score > compScore) {
-    victory = "You are the winner!!!";
-}
-if (compScore > score) {
-    victory = "You are the loser!!!";
-}
-if (compScore == score) {
-    victory = "No one wins!!!";
-}
+    verbage(message);
+    keeper (score, compScore);
+});
 
+paper.addEventListener('click', (playerSelection) =>{
+    playerSelection = 'paper';
+    playRound(playerSelection, choice);
+    computerPlay();
+    verbage(message);
+    keeper (score, compScore);
+});
 
-alert(victory);
+scissors.addEventListener('click', (playerSelection) =>{
+    playerSelection = 'scissors';
+    playRound(playerSelection, choice);
+    computerPlay();
+    verbage(message);
+    keeper (score, compScore);
+});
+
